@@ -8,7 +8,6 @@ interface IPayload {
 }
 
 export const TokenValidation = (req: Request, res: Response, next: NextFunction) => {
-  console.log(req.cookies)
   try {
     const token = req.cookies.token
     if(!token) throw new Error('Unathorized!')

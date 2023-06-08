@@ -2,6 +2,7 @@ import { Response, Request } from "express"
 import { User } from "../entities/User.entity"
 import 'dotenv/config'
 import getOneService from "../services/user/get-one.service" 
+import createOneService from "../services/user/create-one.service"
 import { tokenSign } from "../helper/auth"
 
 export const registerNewUser = async (req:Request, res:Response) => {
@@ -11,20 +12,14 @@ export const registerNewUser = async (req:Request, res:Response) => {
     const {error, user} = await getOneService({ where: {email}})
     if(!error && user) return res.status(409).json({error: {message: 'Email already exist.'}})
     
-    const newUser = new User()
-    newUser.firstName = firstName
-    newUser.lastName = lastName
-    newUser.email = email
-    newUser.password = await newUser.encryptPassword(password)
-    await newUser.save()
-    
-    const token = tokenSign(newUser.id, '1h')
+    const createUser = await createOneService(req.body)
+    if(error || !createUser) return res.status(500).json({message: 'Error service.'})
+
+    const token = tokenSign(createUser.newUser?.id || '', '1h')
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60
-    }).status(200).json({info:{message: "Login succesfully"}})
-
-    res.header('auth-token', token).status(201).json({msg:"User created succesfully"})
+    }).status(201).json({msg:"User created succesfully"})
 
   } catch (error) {
     res.status(500).json({error: {message: 'Error application'}})
