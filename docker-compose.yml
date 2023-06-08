@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+
+  chatsparkle_db_service:
+
+   image: "postgres"
+   container_name: "chatsparklepostgredb"
+   environment:
+     - POSTGRES_USER=sa
+     - POSTGRES_PASSWORD=EsternocleidoMastoideo1972
+     - POSTGRES_DB=chatsparkledb
+   
+   volumes:
+     - ./postgres-data:/var/lib/postgresql/data
+
+   ports:
+     - "5432:5432"
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    logging:
+      driver: "none"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    volumes:
+      - ./pgadmin-data:/var/lib/pgadmin
