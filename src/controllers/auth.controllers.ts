@@ -1,6 +1,5 @@
 import { Response, Request } from "express"
 import { User } from "../entities/User.entity"
-import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 import getOneService from "../services/user/get-one.service" 
 import { tokenSign } from "../helper/auth"
@@ -68,4 +67,9 @@ export const profile = async (req:Request, res:Response) => {
 
   }
 
+}
+
+export const logoutUser = async (req:Request, res:Response) => {
+  res.clearCookie("token")
+  res.status(200).json({info:{message: "User logout successfully"}})
 }
