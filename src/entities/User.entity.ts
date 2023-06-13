@@ -1,5 +1,7 @@
-import {BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm'
+import {BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm'
 import bcrypt from 'bcryptjs'
+import { UserRoom } from './UserRoom.entity'
+import { Room } from './Room.entity'
 
 @Entity()
 export class User extends BaseEntity{
@@ -7,20 +9,29 @@ export class User extends BaseEntity{
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column({type: 'text'})
+  @Column()
   firstName: string
 
-  @Column({type: 'text'})
+  @Column()
   lastName: string
   
   @Column({unique: true})
   email: string
+
+  @Column({unique: true})
+  userName: string
   
-  @Column({type: 'text'})
+  @Column()
   password: string
 
   @Column({default: true})
   active: boolean
+
+  @OneToMany(() => Room, x => x.createdBy)
+  rooms: Room[]
+
+  @OneToMany(() => UserRoom, x => x.user)
+  userRoom: UserRoom[]
 
   @CreateDateColumn()
   createdAt: Date
