@@ -9,8 +9,7 @@
     "build": "tsc",
     "start": "node ./dist/index.js",
     "typeorm:migrate": "typeorm-ts-node-commonjs migration:generate ./src/migrations/migration -d ./src/db/index.ts -p",
-    "typeorm:run": "typeorm-ts-node-commonjs migration:run -d ./src/db/index.ts",
-    "typeorm:create": "typeorm-ts-node-commonjs migration:create ./src/migrations/."
+    "typeorm:run": "typeorm-ts-node-commonjs migration:run -d ./src/db/index.ts"
   },
   "keywords": [],
   "author": "",

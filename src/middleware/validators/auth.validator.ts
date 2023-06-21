@@ -8,6 +8,9 @@ export const validateUserRegistration = [
   check('lastName').trim().not().isEmpty().
     withMessage('Lastname is empty.').isLength({ min: 2, max: 35 }).
     withMessage('Last Name must be at least 2 characters.'),
+  check('userName').trim().not().isEmpty().
+    withMessage('userName is empty.').isLength({ min: 4, max: 35 }).
+    withMessage('UserName must be at least 4 characters.'),
   check('email').normalizeEmail().isEmail().withMessage('Invalid email.'),
   check('password').trim().not().isEmpty().
     withMessage('Password is empty.').isLength({ min: 6 }).

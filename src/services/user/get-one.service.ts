@@ -9,7 +9,7 @@ export default async (filter: FindOneOptions<User>) => {
     console.log(error)
     return {
       error: {
-        message: 'Error service.'
+        message: 'Service error.'
       }
     }
   }

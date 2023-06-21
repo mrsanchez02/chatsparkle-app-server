@@ -1,4 +1,4 @@
-import {BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm'
+import {BaseEntity, Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm'
 import bcrypt from 'bcryptjs'
 import { UserRoom } from './UserRoom.entity'
 import { Room } from './Room.entity'
@@ -38,6 +38,9 @@ export class User extends BaseEntity{
 
   @UpdateDateColumn()
   updatedAt: Date
+
+  @DeleteDateColumn()
+  deletedAt: Date
 
   async encryptPassword(pass: string): Promise<string>{
     const salt = await bcrypt.genSalt(10)

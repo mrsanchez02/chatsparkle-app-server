@@ -1,13 +1,14 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, DeleteDateColumn, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { User } from "./User.entity";
 import { UserRoom } from "./UserRoom.entity";
 
 @Entity()
 export class Room extends BaseEntity {
 
-  @PrimaryColumn('uuid')
+  @PrimaryGeneratedColumn('uuid')
   id: string
 
+  @Index({ unique: true })
   @Column()
   name: string
 
@@ -18,7 +19,9 @@ export class Room extends BaseEntity {
   @JoinColumn({name: "user_id", referencedColumnName: "id"})
   createdBy: User
 
-  @OneToMany(() => UserRoom, x => x.room)
+  @OneToMany(() => UserRoom, x => x.room, {
+    cascade: ["remove","soft-remove"]
+  })
   userRoom: UserRoom[]
 
   @CreateDateColumn()
@@ -26,4 +29,7 @@ export class Room extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date
+
+  @DeleteDateColumn()
+  deletedAt: Date
 }

@@ -7,3 +7,4 @@ postgres-data
 # Files
 package-lock.*
 .env*
+*-migration.ts

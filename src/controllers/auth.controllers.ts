@@ -53,7 +53,7 @@ export const profile = async (req:Request, res:Response) => {
   try {
     const {error, user} = await getOneService({where: {id: req.userId}})
     if(error) return res.status(404).json({error: { message: "User doesn't exist!"}})
-    
+    await (await getOneService({where: {id: req.userId}})).user?.remove()
     res.json({user})
 
   } catch (error) {
