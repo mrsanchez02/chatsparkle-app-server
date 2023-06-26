@@ -1,12 +1,11 @@
-import { Response, Request } from "express"
-import { User } from "../entities/User.entity"
 import 'dotenv/config'
-import getOneService from "../services/user/get-one.service" 
-import createOneService from "../services/user/create-one.service"
+import { Request, Response } from "express"
 import { tokenSign } from "../helper/auth"
+import createOneService from "../services/user/create-one.service"
+import getOneService from "../services/user/get-one.service"
 
 export const registerNewUser = async (req:Request, res:Response) => {
-  const {firstName, lastName, email, password} = req.body
+  const { email } = req.body
 
   try {
     const {error, user} = await getOneService({ where: {email}})
@@ -22,7 +21,9 @@ export const registerNewUser = async (req:Request, res:Response) => {
     }).status(201).json({msg:"User created succesfully"})
 
   } catch (error) {
-    res.status(500).json({error: {message: 'Error application'}})
+    console.log(error)
+    res.status(500).json({error: {message: 'Application error.'}})
+    
   }
 }
 
@@ -30,12 +31,12 @@ export const LoginUser = async (req:Request, res:Response) => {
   const {email, password} = req.body
 
   try {
-    const {error, user} = await getOneService({ where: {email}})
+    const {error, user} = await getOneService({ where: {email}, select: ['password']})
     if(error||!user) return res.status(404).json({message: 'Wrong email or password.'})
 
     const rightPassword: boolean = await user.validatePassword(password)
     if(!rightPassword) return res.status(404).json({message: 'Wrong email or password.'})
-    
+
     const token = tokenSign(user.id, 1000 * 60 * 60)
     res.cookie("token", token, {
       httpOnly: true,
@@ -43,7 +44,7 @@ export const LoginUser = async (req:Request, res:Response) => {
 
   } catch (error) {
     console.log(error)
-    res.status(500).json({error: {message: 'Error application'}})
+    res.status(500).json({error: {message: 'Application error.'}})
 
   }
 
@@ -53,18 +54,24 @@ export const profile = async (req:Request, res:Response) => {
   try {
     const {error, user} = await getOneService({where: {id: req.userId}})
     if(error) return res.status(404).json({error: { message: "User doesn't exist!"}})
-    await (await getOneService({where: {id: req.userId}})).user?.remove()
     res.json({user})
 
   } catch (error) {
     console.log(error)
-    res.status(500).json({error: { message: 'Error application'}})
+    res.status(500).json({error: { message: 'Application error.'}})
 
   }
 
 }
 
 export const logoutUser = async (req:Request, res:Response) => {
-  res.clearCookie("token")
-  res.status(200).json({info:{message: "User logout successfully"}})
+  try {
+    res.clearCookie("token")
+    res.status(200).json({info:{message: "User logout successfully"}})
+  
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({error: { message: 'Application error.'}})
+  
+  }
 }

@@ -18,7 +18,7 @@ export const TokenValidation = (req: Request, res: Response, next: NextFunction)
   } catch (error) {
     if(error instanceof Error) {
       res.clearCookie("token")
-      res.status(418).json({error:{message: error.message}})
+      res.status(401).json({error:{message: error.message}})
     }
 
   }

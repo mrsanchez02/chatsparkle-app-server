@@ -12,6 +12,19 @@ export const validateRoomDelete = [
     withMessage('Room id is empty.')
 ]
 
+export const validateRoomRestore = [
+  check('id').trim().not().isEmpty().
+    withMessage('Room id is empty.')
+]
+
+export const validateRoomRename = [
+  check('id').trim().not().isEmpty().
+    withMessage('Room id is empty.'),
+  check('newName').trim().not().isEmpty().
+    withMessage('Room name is empty.').isLength({ min: 4, max: 50 }).
+    withMessage('Room name must be at least 4 characters.')
+]
+
 export const roomValidation = (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = validationResult(req).array()
