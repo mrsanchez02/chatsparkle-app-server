@@ -10,7 +10,7 @@ router.delete('/delete-room/:id', TokenValidation, validateRoomDelete, roomValid
 router.get('/my-rooms', TokenValidation, getAllRoomsActualUser)
 router.get('/room/:id', TokenValidation, getOneRoomActualuser)
 router.post('/restore-room', TokenValidation, validateRoomRestore, roomValidation, recoverRoom)
-router.post('/rename-room', TokenValidation, validateRoomRename, roomValidation, renameRoom)
+router.patch('/rename-room', TokenValidation, validateRoomRename, roomValidation, renameRoom)
 
 
 export default router

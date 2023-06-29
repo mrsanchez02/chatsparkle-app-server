@@ -17,6 +17,11 @@ export const validateUserRegistration = [
     withMessage('Password must be at least 6 characters long')
 ]
 
+export const validateUserRecover = [
+  check('userToRestore').trim().not().isEmpty()
+    .withMessage('User to restore required to restore.')
+]
+
 export const validateUserLogin = [
   check('email').normalizeEmail().isEmail().withMessage('Invalid email.'),
   check('password').trim().not().isEmpty().

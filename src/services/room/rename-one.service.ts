@@ -1,7 +1,5 @@
 import { FindOneOptions } from "typeorm";
 import { Room } from "../../entities/Room.entity";
-import { User } from "../../entities/User.entity";
-import getOneService from "./get-one.service";
 import getOneByUserService from "./get-one-by-user.service";
 
 export default async ({filter, roomName}: {filter: FindOneOptions<Room>, roomName: string} ) => {
